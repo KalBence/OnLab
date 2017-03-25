@@ -1,0 +1,45 @@
+﻿@model IEnumerable<KonyvLab.dal.Models.Review>
+
+<body>
+    <p>Hello and Welcome to the kONyvLAB homepage!</p>
+
+    <h2>All Reviews</h2>
+
+    <table class="table" border="1">
+        <tr>
+            <th>By</th>
+            <th>Book Author</th>
+            <th>Book Title</th>
+            <th>Rating</th>
+            <th>#Views</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="/Profile/Index/@item.UserName"> @item.UserName</a>
+                </td>
+                <td>
+                    @item.Author
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Rating
+                </td>
+                <td>
+                    @item.ViewCount
+                </td>
+                <td>
+                    <a href="/Review/Read/@item._id.ToString()">Read review!</a>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <a href="/Review/Add">Add a review!</a>
+
+
+</body>

@@ -1,0 +1,85 @@
+﻿@model LoginViewModel
+@inject SignInManager<IdentityUser> SignInManager
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/login_style.css" />
+<style>
+    .error {
+        color: #a94442;
+        border-color: #ebccd1;
+    }
+</style>
+
+<div class="wrapper">
+    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" id="login" class="form-signin">
+        <h2 class="form-signin-heading">Log In</h2>
+
+        @if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count > 0)
+        {
+                @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+        }
+        <div>
+            <label asp-for="UserName"></label>
+            <input asp-for="UserName" required class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Password" style="margin-top:20px"></label>
+            <input type="password" asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="RememberMe" class="checkbox" style="padding-left: 22px">
+                <input type="checkbox" asp-for="RememberMe" />
+                Remember me
+            </label>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </div>
+        <div>
+            <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-block">Register as a new user</a>
+        </div>
+
+    </form>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script>
+    $().ready(function () {
+        $("#login").validate({
+            rules: {
+                UserName: {
+                    required: true,
+                    minlength: 4
+                },
+                Password: {
+                    required: true,
+                    minlength: 6
+                }
+
+            },
+            messages: {
+                username: {
+                    required: "Please enter a username",
+                    minlength: "Your username must consist of at least 2 characters"
+                },
+                password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 5 characters long"
+                }
+            },
+            highlight: function (element) {
+                $(element).parent().addClass('error')
+            },
+            unhighlight: function (element) {
+                $(element).parent().removeClass('error')
+            }
+        });
+    });
+</script>
+
+
+
+
+

@@ -1,0 +1,46 @@
+﻿@model KonyvLab.Models.ProfileViewModels.ProfileViewModel
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+<a href="/Profile/SendMessage/@Model.userName">Write a Message!</a>
+<h2>@Model.userName's Reviews</h2>
+
+<table class="table" border="1">
+    <tr>
+        <th>By</th>
+        <th>Book Author</th>
+        <th>Book Title</th>
+        <th>Rating</th>
+    </tr>
+
+    @foreach (var item in Model.reviews)
+    {
+        <tr>
+            <td>
+                @item.UserName
+            </td>
+            <td>
+                @item.Author
+            </td>
+            <td>
+                @item.Title
+            </td>
+            <td>
+                @item.Rating
+            </td>
+            <td>
+                <a href="/Review/Read/@item._id.ToString()">Read review!</a>
+            </td>
+            @if (UserManager.GetUserName(User).ToString() == @item.UserName)
+            {
+            <td>
+                <a href="/Review/Update/@item._id.ToString()">Update</a>
+            </td>
+            }
+        </tr>
+    }
+</table>
+
+<a href="/">Home!</a>
+

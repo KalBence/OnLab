@@ -1,0 +1,56 @@
+﻿<script src="~/lib/jquery/dist/jquery.js"></script>
+
+
+<form asp-controller="Review" asp-action="Add" method="post" id="Add">
+    <h4>Add a new review.</h4>
+
+    <label>Title:</label>
+    <input id="Title" list="TitlesFromGoogle" autocomplete="off" name="Title" value="" /><br />
+
+    <label>Author:</label>
+    <input id="Author" type="text" name="Author" value="" /><br />
+
+    <label>Category:</label>
+    <input id="Category" type="text" name="Category" value="" /><br />
+
+    <img id="Image" src="" />
+    <input id="ImageLink" type="text" name="ImageLink" value="" hidden/><br />
+
+
+    <textarea id="Description" rows="8" cols="100" name="Description" readonly></textarea>
+
+    <label>Rating:</label>
+    <input type="number" step="1" min="1" max="10" name="Rating" value="" /><br />
+
+    <label>Review:</label>
+    <textarea rows="8" cols="100" name="Content" form="Add" id="content">Enter text here...</textarea>
+
+    <br />
+    <button id="btn" type="submit" value="Submit">Submit!</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+
+        var params = localStorage.Title;
+        if (localStorage.FromGoogle == "true") {
+            params = params.split(' ').join('+');
+            var googleAPI = "https://www.googleapis.com/books/v1/volumes?q=" + params + "&key=AIzaSyBpel1zUxT_owgB0l8_E3wA6bBNQw2xfDA&country=HU";
+            $.getJSON(googleAPI, function (response) {
+
+                $("#Title").val(response.items[0].volumeInfo.title);
+                $("#Author").val(response.items[0].volumeInfo.authors[0]);
+                $("#ImageLink").val(response.items[0].volumeInfo.imageLinks.thumbnail);
+                $("#Image").prop("src", response.items[0].volumeInfo.imageLinks.thumbnail);
+                $("#Description").html(response.items[0].volumeInfo.description);
+                $("#Category").val(response.items[0].volumeInfo.categories[0]);
+                //$("#BuyLink").prop("href", response.items[0].volumeInfo.buyLink);
+            });
+
+        }
+        else {
+            $("#Title").val(params);
+            $("#Image").prop("src", "http://placehold.it/128x195");
+        }
+    });
+</script>

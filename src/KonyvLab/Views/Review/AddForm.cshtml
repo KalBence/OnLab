@@ -1,0 +1,80 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<div>
+    <h4>Add a new review.</h4>
+    <div>
+        <label>Title:</label>
+        <input style="width: 50%" id="Title" list="TitlesFromGoogle" autocomplete="off" name="Title" value="" /><br />
+        <datalist id="TitlesFromGoogle"></datalist>
+    </div>
+    <p id="Author" />
+    <br />
+    <a href="/Review/AddDetails" id="btn" type="submit" class="btn btn-default">Review this!</a>
+
+</div>
+<script>
+    var dl = document.getElementById('TitlesFromGoogle');
+
+    $(document).ready(function () {
+        $("#Title").on("input", async function () {
+            if ($("#Title").val().length > 3)
+            {
+                //var dl = document.createElement("datalist");
+                //dl.id = "TitlesFromGoogle";
+                while (dl.firstChild) {
+                    dl.removeChild(dl.firstChild);
+                }
+                //document.getElementById("a").innerHTML = $('#Title').val();
+
+                params = $('#Title').val();
+                params = params.split(' ').join('+');
+                var googleAPI = "https://www.googleapis.com/books/v1/volumes?q=" + params + "&key=AIzaSyBpel1zUxT_owgB0l8_E3wA6bBNQw2xfDA&country=HU";
+
+                $.getJSON(googleAPI, await function (response) {
+                    for (var i = 0; i < response.items.length; i++) {
+                        var option = document.createElement('option');
+                        var item = response.items[i];
+                        option.value = item.volumeInfo.title;/* + "  by:  " + item.volumeInfo.authors[0] ;*/
+                        dl.appendChild(option);
+                        //document.getElementById("test").innerHTML = "<br>" + item.volumeInfo.authors[0];      
+                        //document.getElementById("test").innerHTML += "<br>" + $("#Title").val();  
+                    }
+                    localStorage.setItem("Title", $('#Title').val());
+
+                    //document.getElementById("Author").innerHTML = response.items[0].volumeInfo.authors[0];      
+                    if (response.items[0].volumeInfo.title == $('#Title').val()) {
+                        localStorage.setItem("FromGoogle", true);
+                    }
+                    else {
+                        localStorage.setItem("FromGoogle", false);
+                    }
+
+                });
+            }
+
+        });
+
+       /* $("#btn").click(function () {
+            params = $('#Title').val();
+            params = params.split(' ').join('+');
+            var googleAPI = "https://www.googleapis.com/books/v1/volumes?q=" + params + "&key=AIzaSyBpel1zUxT_owgB0l8_E3wA6bBNQw2xfDA&country=HU";
+
+            $.getJSON(googleAPI, function (response) {
+                console.log("clicked");
+                //if (response.items[0]) {
+                    localStorage.setItem("Title", response.items[0].volumeInfo.title);
+                    localStorage.setItem("Author", response.items[0].volumeInfo.authors[0]);
+                    localStorage.setItem("Description", response.items[0].volumeInfo.description);
+                    localStorage.setItem("Categories", response.items[0].volumeInfo.categories[0]);
+                    localStorage.setItem("Image", response.items[0].volumeInfo.imageLinks.thumbnail);
+                    localStorage.setItem("BuyLink", response.items[0].volumeInfo.buyLink);
+              //  }
+               // else {
+                    localStorage.setItem("Title", $("#Title").val());
+               // }
+            });
+
+        });*/
+
+    });
+</script>

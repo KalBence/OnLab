@@ -1,0 +1,55 @@
+﻿@model KonyvLab.Models.ProfileViewModels.SearchViewModel
+
+<h4>Users found:</h4>
+<table>
+@foreach (var item in Model.FoundUsers)
+{
+    <tr>
+        <td>
+            <a href="/Profile/Index/@item.UserName"> @item.UserName</a>
+        </td>
+        <td>
+            @item.Email
+        </td>
+        <td>
+            <a href="/Profile/SendMessage/@item.UserName">Write a Message!</a>
+        </td>        
+    </tr>
+}
+</table>
+<p/>
+<h4>Reviews found with matching Authors: </h4>
+<table>
+    @foreach (var item in Model.FoundAuthor)
+    {
+        <tr>
+            <td>
+                <a href="/Review/Read/@item._id.ToString()">@item.Author</a>
+            </td>
+            <td>
+                @item.Title
+            </td>
+            <td>
+                @item.Rating
+            </td>
+        </tr>
+    }
+</table>
+<p />
+<h4>Reviews found with matching Title: </h4>
+<table>
+    @foreach (var item in Model.FoundTitle)
+    {
+        <tr>
+            <td>
+                <a href="/Review/Read/@item._id.ToString()">@item.Author</a>
+            </td>
+            <td>
+                @item.Title
+            </td>
+            <td>
+                @item.Rating
+            </td>
+        </tr>
+    }
+</table>

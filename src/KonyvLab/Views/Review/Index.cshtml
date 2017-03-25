@@ -1,0 +1,38 @@
+﻿@model IEnumerable<KonyvLab.dal.Models.Review>
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<body>
+    <h2>All Reviews</h2>
+
+    <table class="table" border="1" >
+        <tr>
+            <th>By</th>
+            <th>Book Author</th>
+            <th>Book Title</th>
+            <th>Rating</th>
+            <th>Review</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="100">
+                    <a href="/Profile/Index/@item.UserName"> @item.UserName</a>
+                </td>
+                <td>
+                    @item.Author
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Rating
+                </td>
+                <td>
+                    <a href="/Review/Read/@item._id.ToString()">Read review!</a>
+                </td>
+            </tr>
+        }
+    </table>
+</body>

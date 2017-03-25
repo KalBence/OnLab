@@ -1,0 +1,35 @@
+﻿@model IEnumerable<KonyvLab.dal.Models.Message>
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<body>
+    <p>Here you can see your messages from other users.</p>
+
+    <h2>Your Messages:</h2>
+
+    @foreach (var item in Model)
+    {
+    <table class="table" border="1" style="margin-bottom:10px" width="30%">
+            <tr>
+                <td width="20%">
+                    From:
+                </td>
+                <td>
+                    <a href="/Profile/Index/@item.FromUserName">@item.FromUserName </a>               
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Message:
+                </td>
+                <td>
+                    @item.Content
+                </td>
+            </tr>
+        
+    </table>
+    }
+
+    <a href="/Profile/Index/@UserManager.GetUserName(User)">Back!</a>
+
+
+</body>

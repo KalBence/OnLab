@@ -1,0 +1,28 @@
+﻿@model KonyvLab.dal.Models.Review
+
+<h2>@Model.UserName's review</h2>
+<div class="col-sm-12">
+    <div class="col-sm-4">
+        <img src="@Model.ImageLink" alt="Alternate Text" />
+    </div>
+    <div class="col-sm-8">
+        Book Title: <b>@Model.Title</b><br />
+        Written by: <b>@Model.Author</b><br />
+        Category: <b>@Model.Category</b><br />
+    </div>
+    <div class="col-sm-12">
+        <textarea rows="8" cols="100">@Model.Description</textarea>
+    </div>
+    <div class="col-sm-12">
+        <br />@Model.UserName's rating was <b>@Model.Rating</b><br />
+        Read Count: <b>@Model.ViewCount</b><br />
+    </div>
+
+    <div class="col-sm-12">
+        Review:
+        <br />
+        <textarea readonly rows="8" cols="100">@Model.Content</textarea>
+    </div>
+</div>
+<a href="/">Home!</a>
+    

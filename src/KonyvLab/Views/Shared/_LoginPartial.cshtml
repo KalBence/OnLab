@@ -1,0 +1,33 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<header class="container">
+
+    <h1 class="col-sm-5"> kONyvLAB</h1>
+
+    <div class="col-sm-3" style="padding-top:27px">
+        <form asp-controller="Profile" asp-action="Search" method="post">
+            <input type="text" id="SearchValue" name="SearchValue" class="input-sm"/>
+            <button type="submit" class="btn glyphicon-search"></button>
+        </form>
+    </div>
+
+    @if (SignInManager.IsSignedIn(User))
+    {  
+        <div class="col-sm-4" style="padding-top:25px" align="right">
+            <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" style="text-align:right; margin-right:80px">
+                <a class="btn btn-default" href="/Profile/Index/@UserManager.GetUserName(User)"> Hello @UserManager.GetUserName(User)!</a>
+                <a class="btn btn-default" href="/Profile/ViewMessages/@UserManager.GetUserName(User)"> INBOX</a>
+                <button class="btn btn-danger" type="submit">Log Out</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="col-sm-4" style="padding-top:25px" align="right">
+            Hello Stranger!
+            <a class="btn btn-default" asp-controller="Account" asp-action="Register">Register</a>
+            <a class="btn btn-success" asp-controller="Account" asp-action="Login">Log in</a>
+        </div>
+    }
+</header>
+<br />

@@ -1,0 +1,95 @@
+﻿@model RegisterViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/login_style.css" />
+<style>
+    .error {
+        color: #a94442;
+        border-color: #ebccd1;
+    }
+</style>
+
+<div class="wrapper">
+    <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" id="register" class="form-signin">
+        <h2 class="form-signin-heading">Register</h2>
+
+        @if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count > 0)
+        {
+            @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+        }
+
+        <div>
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control"  />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="UserName"  style="margin-top:20px"></label>
+            <input asp-for="UserName" minlength="5" class="form-control"  />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Password"  style="margin-top:20px"> </label>
+            <input asp-for="Password" type="password" class="form-control"  />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div style="padding-bottom:30px; margin-top:20px">
+            <label asp-for="ConfirmPassword"></label>
+            <input asp-for="ConfirmPassword" type="password" class="form-control"  />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </div>
+        <div>
+            <a asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-block">Back to the Login page</a>
+        </div>
+
+    </form>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script>
+    $().ready(function () {        
+        $("#register").validate({
+            rules: {
+                    Email: {
+                       required: true,
+                       email: true
+                   },
+                    UserName: {
+                        required: true,
+                        minlength: 5
+                    },
+                    Password: {
+                        required: true,
+                        minlength: 6
+                    },
+                    ConfirmPassword: {
+                        required: true,
+                        minlength: 6,
+                        equalTo: "#Password"
+                    }
+
+                },
+                messages: {
+                    username: {
+                        required: "Please enter a username",
+                        minlength: "Your username must consist of at least 2 characters"
+                    },
+                    password: {
+                        required: "Please provide a password",
+                        minlength: "Your password must be at least 5 characters long"
+                    },
+                    confirm_password: {
+                        required: "Please provide a password",
+                        minlength: "Your password must be at least 5 characters long",
+                        equalTo: "Please enter the same password as above"
+                    },
+                    email: "Please enter a valid email address"
+                }
+        });
+    });
+</script>
+

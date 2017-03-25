@@ -1,0 +1,27 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model KonyvLab.dal.Models.Review
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+
+<form asp-controller="Review" asp-action="Update/@Model._id.ToString()" method="post" id="Add" asp-route-returnurl="@ViewData["ReturnUrl"]">
+    <h4>Update your review!</h4>
+
+    <label>Author:</label>
+    <input type="text" name="Author" value="@Model.Author" /><br />
+    <label>Title:</label>
+    <input type="text" name="Title" value="@Model.Title" /><br />
+    <label>Rating:</label>
+    <input type="number" step="1" min="1" max="10" name="Rating" value="@Model.Rating" /><br />
+    <label>Review:</label>
+    <textarea rows="8" cols="100" name="Content" form="Add">@Model.Content
+    </textarea>
+    <br />
+    <button type="submit" value="Submit">Update!</button>
+</form>
+
+
+<a href="/Profile/Index/@UserManager.GetUserName(User)">Cancel</a>
+
+<a href="/Review/Delete/@Model._id.ToString()">Delete!!!</a>

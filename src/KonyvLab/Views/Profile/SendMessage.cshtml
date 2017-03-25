@@ -1,0 +1,18 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model String
+
+
+<form asp-controller="Profile" asp-action="SendMessage" method="post" id="Send">
+    <h4>Send a Message to @Model</h4>
+
+    <label>To:</label>
+    <input type="text" name="ToUserName" value="@Model" readonly/><br />
+    <label>From:</label>
+    <input type="text" name="FromUserName" value="@UserManager.GetUserName(User)" readonly/><br />
+    <label>Message:</label>
+    <textarea rows="8" cols="100" name="Content" form="Send">Enter your message here...
+    </textarea>
+    <br />
+    <button type="submit" value="Submit">Send!</button>
+</form>
