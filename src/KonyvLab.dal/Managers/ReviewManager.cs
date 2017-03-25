@@ -32,7 +32,6 @@ namespace KonyvLab.dal.Managers
         {
             ObjectId oid = new ObjectId(Id);
             _collection.FindOneAndUpdate(Builders<Review>.Filter.Eq("_id", oid), Builders<Review>.Update.Inc("ViewCount", 1));
-
         }
 
         public IQueryable<Review> GetAllReviews()

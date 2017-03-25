@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using KonyvLab.dal.Managers;
 using KonyvLab.dal.Models;
 using MongoDB.Bson;
+using System;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,6 +16,7 @@ namespace KonyvLab.Controllers
     public class ReviewController : Controller
     {
         protected ReviewManager _reviewManager;
+        protected NotificationManager _notificationManager = new NotificationManager();
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
@@ -45,8 +47,21 @@ namespace KonyvLab.Controllers
         [HttpPost]
         public IActionResult Add(Review review)
         {
-            review.UserName = _userManager.GetUserName(HttpContext.User);
+            var LoggedInUser = _userManager.GetUserAsync(HttpContext.User).Result;
+            review.UserName = LoggedInUser.UserName;
             _reviewManager.AddNewReview(review);
+            
+            foreach(var u in LoggedInUser.Subscribers)
+            {
+                Notification n = new Notification()
+                {
+                    UserId = u,
+                    Object = review._id,
+                    Time = DateTime.Now,
+                    Message = LoggedInUser + "has just uploaded a new Review"
+                };
+                _notificationManager.AddNewNotification(n);
+            }
             return LocalRedirect("/");
         }
 

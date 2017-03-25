@@ -1,0 +1,33 @@
+﻿@model IEnumerable<KonyvLab.dal.Models.Notification>
+<body>
+    <p>Here you can see your notifications</p>
+
+    <h2>Your Notifications:</h2>
+
+    @foreach (var item in Model)
+    {
+        <table class="table" border="1" style="margin-bottom:10px" width="30%">
+            <tr>
+                <td width="20%">
+                    Time:
+                </td>
+                <td>
+                    @item.Time
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Message:
+                </td>
+                <td>
+                    @item.Message
+                </td>
+            </tr>
+
+        </table>
+    }
+
+    <a href="/Profile/Index/@UserManager.GetUserName(User)">Back!</a>
+
+
+</body>

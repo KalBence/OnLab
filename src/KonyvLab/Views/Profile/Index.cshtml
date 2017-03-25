@@ -1,7 +1,9 @@
 ﻿@model KonyvLab.Models.ProfileViewModels.ProfileViewModel
 
 
-<a href="/Profile/SendMessage/@Model.userName">Write a Message!</a>
+<a href="/Profile/SendMessage/@Model.userName" class="btn-default btn">Write a Message!</a>
+<a href="/Profile/Follow/@Model.userName" class="btn-default btn">FolloW</a>
+
 <h2>@Model.userName's Reviews</h2>
 
 <table class="table" border="1">

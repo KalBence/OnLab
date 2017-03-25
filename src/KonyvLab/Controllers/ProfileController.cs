@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using KonyvLab.dal.Managers;
 using KonyvLab.Models.ProfileViewModels;
 using KonyvLab.dal.Models;
+using MongoDB.Bson;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,6 +21,8 @@ namespace KonyvLab.Controllers
     {
         protected ReviewManager _reviewManager;
         protected MessageManager _messageManager = new MessageManager();
+        protected NotificationManager _notificationManager = new NotificationManager();
+
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
@@ -71,12 +74,44 @@ namespace KonyvLab.Controllers
         public IActionResult Search(string SearchValue)
         {
             SearchViewModel searchViewModel = new SearchViewModel();
-            //beleírjak az alap UserManager implementációba?
             searchViewModel.FoundUsers = _userManager.Users.Where(u => u.UserName.ToUpper().Contains(SearchValue.ToUpper()));
             searchViewModel.FoundAuthor = _reviewManager.FindByAuthor(SearchValue);
             searchViewModel.FoundTitle = _reviewManager.FindByTitle(SearchValue);
 
             return View(searchViewModel);
+        }
+
+        [HttpGet]
+        [Route("Profile/Follow/{userName}")]
+        public async Task<IActionResult> Follow(string userName)
+        {
+            var LoggedInUser = _userManager.GetUserAsync(HttpContext.User).Result;
+            ObjectId LoggedInUserId = new ObjectId(LoggedInUser.Id);
+
+            var User = _userManager.Users.Where(u => u.UserName == userName).SingleOrDefault();
+            ObjectId UserId = new ObjectId(User.Id);
+
+            if (!User.Subscribers.Contains(LoggedInUserId))
+            {
+                User.Subscribers.Add(LoggedInUserId);
+                LoggedInUser.SubscribedTo.Add(UserId);
+
+                IdentityResult result1 = await _userManager.UpdateAsync(LoggedInUser);
+                IdentityResult result2 = await _userManager.UpdateAsync(User);
+            }
+            else
+            {
+                //error message
+            }
+
+            return LocalRedirect("/Profile/Index/" + userName);
+        }
+
+        [HttpGet]
+        [Route("Profile/ViewNotifications/{UserId}")]
+        public IActionResult ViewNotifications(string UserId)
+        {
+            return View(_notificationManager.FindByUserId(UserId));
         }
 
     }
