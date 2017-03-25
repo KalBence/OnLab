@@ -15,13 +15,13 @@ namespace KonyvLab.Controllers
     public class ReviewController : Controller
     {
         protected ReviewManager _reviewManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
 
         public ReviewController(
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager,
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager,
         ILoggerFactory loggerFactory,
         ReviewManager rwManager)
         {

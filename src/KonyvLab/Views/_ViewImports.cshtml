@@ -6,4 +6,6 @@
 @using KonyvLab.Models.AccountViewModels
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Identity.MongoDB
+@inject SignInManager<KonyvLab.dal.Models.ApplicationUser> SignInManager
+@inject UserManager<KonyvLab.dal.Models.ApplicationUser> UserManager
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

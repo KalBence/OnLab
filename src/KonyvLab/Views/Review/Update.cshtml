@@ -1,9 +1,5 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model KonyvLab.dal.Models.Review
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
-
 
 <form asp-controller="Review" asp-action="Update/@Model._id.ToString()" method="post" id="Add" asp-route-returnurl="@ViewData["ReturnUrl"]">
     <h4>Update your review!</h4>

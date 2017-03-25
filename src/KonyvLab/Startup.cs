@@ -1,6 +1,9 @@
 ﻿using KonyvLab.dal.Managers;
+using KonyvLab.dal.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.MongoDB;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,7 +31,7 @@ namespace KonyvLab
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityWithMongoStores(Configuration.GetConnectionString("DefaultConnection"))
+            services.AddIdentityWithMongoStoresUsingCustomTypes<ApplicationUser, IdentityRole>(Configuration.GetConnectionString("DefaultConnection"))
             .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(option =>
@@ -39,9 +42,9 @@ namespace KonyvLab
                 option.Password.RequireLowercase = false;
             });
 
+
             services.AddTransient<ReviewManager>();
-            //services.AddScoped<ReviewManager>();
-            //services.AddSingleton<ReviewManager>();
+
             services.AddMvc();
         }
 
