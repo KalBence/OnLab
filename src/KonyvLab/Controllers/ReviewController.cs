@@ -47,8 +47,6 @@ namespace KonyvLab.Controllers
         {
             review.UserName = _userManager.GetUserName(HttpContext.User);
             _reviewManager.AddNewReview(review);
-            //notify subscribers
-            //TODO
             return LocalRedirect("/");
         }
 
