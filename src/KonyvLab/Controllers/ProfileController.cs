@@ -43,9 +43,11 @@ namespace KonyvLab.Controllers
         [Route("Profile/Index/{userName}")]
         public IActionResult Index(string userName)
         {
-            ProfileViewModel pvm = new ProfileViewModel();
-            pvm.reviews = _reviewManager.FindByUserName(userName);
-            pvm.userName = userName;
+            ProfileViewModel pvm = new ProfileViewModel()
+            {
+                reviews = _reviewManager.FindByUserName(userName),
+                userName = userName
+            };
             return View(pvm);
         }
 
@@ -73,11 +75,12 @@ namespace KonyvLab.Controllers
         [HttpPost]
         public IActionResult Search(string SearchValue)
         {
-            SearchViewModel searchViewModel = new SearchViewModel();
-            searchViewModel.FoundUsers = _userManager.Users.Where(u => u.UserName.ToUpper().Contains(SearchValue.ToUpper()));
-            searchViewModel.FoundAuthor = _reviewManager.FindByAuthor(SearchValue);
-            searchViewModel.FoundTitle = _reviewManager.FindByTitle(SearchValue);
-
+            SearchViewModel searchViewModel = new SearchViewModel()
+            {
+                FoundUsers = _userManager.Users.Where(u => u.UserName.ToUpper().Contains(SearchValue.ToUpper())),
+                FoundAuthor = _reviewManager.FindByAuthor(SearchValue),
+                FoundTitle = _reviewManager.FindByTitle(SearchValue)
+            };
             return View(searchViewModel);
         }
 
@@ -109,10 +112,18 @@ namespace KonyvLab.Controllers
 
         [HttpGet]
         [Route("Profile/ViewNotifications/{UserId}")]
-        public IActionResult ViewNotifications(string UserId)
+        public async Task<IActionResult> ViewNotifications(string UserId)
         {
+            var LoggedInUser = _userManager.GetUserAsync(HttpContext.User).Result;
+            ObjectId LoggedInUserId = new ObjectId(LoggedInUser.Id);
+
+            LoggedInUser.UnreadNotifications = 0;
+            IdentityResult result = await _userManager.UpdateAsync(LoggedInUser);
+
             return View(_notificationManager.FindByUserId(UserId));
         }
+
+
 
     }
 }

@@ -86,7 +86,7 @@ namespace KonyvLab.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, SubscribedTo = new List<ObjectId>(), Subscribers = new List<ObjectId>(), test = "plsgaben" };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, SubscribedTo = new List<ObjectId>(), Subscribers = new List<ObjectId>() };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

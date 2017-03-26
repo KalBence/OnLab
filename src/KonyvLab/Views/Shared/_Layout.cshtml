@@ -1,11 +1,13 @@
 ﻿<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-        <title>kONyvLab</title>
+        <title>Konyv Lab</title>
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme.css" />
 </head>
 <body class="container">
-    <div>@await Html.PartialAsync("_LoginPartial")</div>
-    <div class="container">@RenderBody()</div>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/login_style.css" />
+    <div  class="container img-rounded" style="padding:0px 30px 0px 30px; margin-bottom:30px; margin-top:10px; background-color:white">@await Html.PartialAsync("_LoginPartial")</div>
+    <div class="container img-rounded" style="padding:30px 30px 30px 20px; background-color:white">@RenderBody()</div>
+    <footer style="padding-top:10px"> Created by: Bence Kalman</footer>
 </body>
 </html>

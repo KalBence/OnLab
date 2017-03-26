@@ -14,7 +14,9 @@ namespace KonyvLab.dal.Models
 
         public virtual List<ObjectId> SubscribedTo { get; set; }
 
-        public virtual String test { get; set; }
+        public virtual int UnreadMessages { get; set; }
+
+        public virtual int UnreadNotifications { get; set; }
 
     }
 }

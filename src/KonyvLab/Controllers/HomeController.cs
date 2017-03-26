@@ -17,7 +17,7 @@ namespace KonyvLab.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View(_reviewManager.GetAllReviews());
+            return View(_reviewManager.GetTopReviews());
         }
     }
 }

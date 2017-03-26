@@ -1,33 +1,60 @@
 ﻿<header class="container">
 
-    <h1 class="col-sm-5"> kONyvLAB</h1>
-
-    <div class="col-sm-3" style="padding-top:27px">
-        <form asp-controller="Profile" asp-action="Search" method="post">
-            <input type="text" id="SearchValue" name="SearchValue" class="input-sm"/>
-            <button type="submit" class="btn glyphicon-search"></button>
-        </form>
-    </div>
-
-    @if (SignInManager.IsSignedIn(User))
-    {  
-        <div class="col-sm-4" style="padding-top:25px" align="right">
-            <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" style="text-align:right; margin-right:80px">
-                <a class="btn btn-default" href="/Profile/Index/@UserManager.GetUserName(User)"> Hello @UserManager.GetUserName(User)!</a>
-                <a class="btn btn-default" href="/Profile/ViewMessages/@UserManager.GetUserName(User)"> INBOX</a>
-                <a class="btn btn-default" href="/Profile/ViewNotifications/@UserManager.GetUserId(User).ToString()"> Notifications</a>
-
-                <button class="btn btn-danger" type="submit">Log Out</button>
+    <div class="container">
+        <div class="col-md-3 col-xs-6" style="padding-top:13px">
+            <a href="/"  style="font-size:40px; font-family:'Old English Text MT'"> Konyv Lab</a>
+        </div>
+        <div class="col-md-3 col-xs-6" style="padding-top:29px" align="right">
+            <form asp-controller="Profile" asp-action="Search" method="post">
+                <input type="text" id="SearchValue" name="SearchValue" class="input-sm" placeholder="author,title,user" autocomplete="off" required/>
+                <button type="submit" class="btn btn-primary">
+                    <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
+                </button>
             </form>
         </div>
-    }
-    else
-    {
-        <div class="col-sm-4" style="padding-top:25px" align="right">
-            Hello Stranger!
-            <a class="btn btn-default" asp-controller="Account" asp-action="Register">Register</a>
-            <a class="btn btn-success" asp-controller="Account" asp-action="Login">Log in</a>
-        </div>
-    }
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="col-md-6 col-xs-12" style="padding-top:25px" align="right">
+                <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" style="text-align:right; margin-right:80px">
+                    Hello @UserManager.GetUserName(User)!
+                    <a class="btn " href="/Profile/Index/@UserManager.GetUserName(User)" style="vertical-align:top"><span aria-hidden="true" class="glyphicon glyphicon-user"></span></a>
+                    <a class="btn " href="/Profile/ViewMessages/@UserManager.GetUserName(User)" style="vertical-align:top">
+                        <span aria-hidden="true" class="glyphicon glyphicon-envelope"></span>
+                        @if (@UserManager.GetUserAsync(User).Result.UnreadMessages != 0)
+                        {
+                             <span id="message-badege" class="badge btn-danger">@UserManager.GetUserAsync(User).Result.UnreadMessages</span>
+                        }
+                        else
+                        {
+                            <span id="notification-badge" class="badge btn-danger"></span>
+                        }
+                    </a>
+                    <a class="btn" href="/Profile/ViewNotifications/@UserManager.GetUserId(User).ToString()" style="vertical-align:top">
+                        <span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign"></span>
+                        @if (@UserManager.GetUserAsync(User).Result.UnreadNotifications != 0)
+                        {
+                             <span id="notification-badge" class="badge btn-danger">@UserManager.GetUserAsync(User).Result.UnreadNotifications</span>
+                        }
+                        else
+                        {
+                            <span id="notification-badge" class="badge btn-danger"></span>
+                        }
+                    </a>
+
+                    <button class="btn btn-danger" type="submit"><span aria-hidden="true" class="glyphicon glyphicon-log-out" style="vertical-align:bottom"></span></button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="col-md-5 col-xs-12" style="padding-top:23px; padding-right:80px" align="right">
+                Hello Stranger!
+                <a class="btn btn-default" asp-controller="Account" asp-action="Register">Register</a>
+                <a class="btn btn-success" asp-controller="Account" asp-action="Login"><span aria-hidden="true" class="glyphicon glyphicon-log-in"></span></a>
+            </div>
+        }
+    </div>
+
 </header>
 <br />

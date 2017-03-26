@@ -7,6 +7,7 @@ using KonyvLab.dal.Managers;
 using KonyvLab.dal.Models;
 using MongoDB.Bson;
 using System;
+using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -45,7 +46,7 @@ namespace KonyvLab.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Review review)
+        public async Task<IActionResult> Add(Review review)
         {
             var LoggedInUser = _userManager.GetUserAsync(HttpContext.User).Result;
             review.UserName = LoggedInUser.UserName;
@@ -58,9 +59,14 @@ namespace KonyvLab.Controllers
                     UserId = u,
                     Object = review._id,
                     Time = DateTime.Now,
-                    Message = LoggedInUser + "has just uploaded a new Review"
+                    Message = LoggedInUser + " has just uploaded a new Review. ",
+                    WasRead = false
                 };
                 _notificationManager.AddNewNotification(n);
+                var TargetUser = _userManager.FindByIdAsync(u.ToString()).Result;
+                TargetUser.UnreadNotifications++;
+                IdentityResult result = await _userManager.UpdateAsync(TargetUser);
+
             }
             return LocalRedirect("/");
         }

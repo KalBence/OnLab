@@ -34,11 +34,11 @@ namespace KonyvLab.dal.Managers
             _collection.FindOneAndUpdate(Builders<Review>.Filter.Eq("_id", oid), Builders<Review>.Update.Inc("ViewCount", 1));
         }
 
-        public IQueryable<Review> GetAllReviews()
+        public IQueryable<Review> GetTopReviews()
         {
-            var q = from e in _collection.AsQueryable()
-                    select e;
-            return q.OrderByDescending(e => e.ViewCount);
+            var q = (from e in _collection.AsQueryable().OrderByDescending(e => e.ViewCount)
+                    select e).Take(10);
+            return q;
         }
 
         public Review FindById(string Id)
