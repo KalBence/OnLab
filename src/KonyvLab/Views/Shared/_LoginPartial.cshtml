@@ -12,12 +12,15 @@
                 </button>
             </form>
         </div>
+       
 
         @if (SignInManager.IsSignedIn(User))
         {
-            <div class="col-md-6 col-xs-12" style="padding-top:25px" align="right">
+            <div class="col-md-2 col-xs-2" style="padding-top:32px" align="right">
+                Hello @UserManager.GetUserName(User)!
+            </div>
+            <div class="col-md-4 col-xs-10" style="padding-top:25px" align="right">
                 <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" style="text-align:right; margin-right:80px">
-                    Hello @UserManager.GetUserName(User)!
                     <a class="btn " href="/Profile/Index/@UserManager.GetUserName(User)" style="vertical-align:top"><span aria-hidden="true" class="glyphicon glyphicon-user"></span></a>
                     <a class="btn " href="/Profile/ViewMessages/@UserManager.GetUserName(User)" style="vertical-align:top">
                         <span aria-hidden="true" class="glyphicon glyphicon-envelope"></span>

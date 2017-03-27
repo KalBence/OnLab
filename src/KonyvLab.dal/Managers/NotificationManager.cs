@@ -35,6 +35,15 @@ namespace KonyvLab.dal.Managers
             return q;
         }
 
+        public void ReadNotifications(String UserId)
+        {
+            var notifications = FindByUserId(UserId);
+            foreach (var n in notifications)
+                _collection.FindOneAndUpdate(Builders<Notification>.Filter.Eq("_id", n._id), Builders<Notification>.Update
+                .Set("WasRead", true));
+        }
+
+        
 
 
     }

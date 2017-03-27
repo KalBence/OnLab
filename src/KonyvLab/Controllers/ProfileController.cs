@@ -41,12 +41,12 @@ namespace KonyvLab.Controllers
 
       //  [HttpGet("{userName}")]
         [Route("Profile/Index/{userName}")]
-        public IActionResult Index(string userName)
+        public async Task<IActionResult> Index(string userName)
         {
             ProfileViewModel pvm = new ProfileViewModel()
             {
                 reviews = _reviewManager.FindByUserName(userName),
-                userName = userName
+                User = await _userManager.FindByNameAsync(userName)
             };
             return View(pvm);
         }
@@ -111,6 +111,32 @@ namespace KonyvLab.Controllers
         }
 
         [HttpGet]
+        [Route("Profile/Unfollow/{userName}")]
+        public async Task<IActionResult> Unfollow(string userName)
+        {
+            var LoggedInUser = _userManager.GetUserAsync(HttpContext.User).Result;
+            ObjectId LoggedInUserId = new ObjectId(LoggedInUser.Id);
+
+            var User = _userManager.Users.Where(u => u.UserName == userName).SingleOrDefault();
+            ObjectId UserId = new ObjectId(User.Id);
+
+            if (User.Subscribers.Contains(LoggedInUserId))
+            {
+                User.Subscribers.Remove(LoggedInUserId);
+                LoggedInUser.SubscribedTo.Remove(UserId);
+
+                IdentityResult result1 = await _userManager.UpdateAsync(LoggedInUser);
+                IdentityResult result2 = await _userManager.UpdateAsync(User);
+            }
+            else
+            {
+                //error message
+            }
+
+            return LocalRedirect("/Profile/Index/" + userName);
+        }
+
+        [HttpGet]
         [Route("Profile/ViewNotifications/{UserId}")]
         public async Task<IActionResult> ViewNotifications(string UserId)
         {
@@ -120,7 +146,32 @@ namespace KonyvLab.Controllers
             LoggedInUser.UnreadNotifications = 0;
             IdentityResult result = await _userManager.UpdateAsync(LoggedInUser);
 
-            return View(_notificationManager.FindByUserId(UserId));
+            var not = _notificationManager.FindByUserId(UserId).ToList();
+            ReadNotifications(UserId);
+
+            return View(not);
+        }
+
+        public void ReadNotifications(string UserId)
+        {
+            _notificationManager.ReadNotifications(UserId);
+        }
+
+        [HttpGet]
+        [Route("Profile/Following/{UserName}")]
+        public IActionResult Following(string UserName)
+        {
+            var User = _userManager.Users.Where(u => u.UserName == UserName).SingleOrDefault();
+            ObjectId UserId = new ObjectId(User.Id);
+
+            List<ApplicationUser> Following = new List<ApplicationUser>();
+
+            foreach(var u in User.SubscribedTo)
+            {
+                Following.Add(_userManager.Users.Where(q => q.Id == u.ToString()).SingleOrDefault());
+            }
+
+            return View(Following);
         }
 
 

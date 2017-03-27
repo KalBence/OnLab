@@ -73,25 +73,9 @@ namespace KonyvLab
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            /*
-             * kliens + szerveroldali validálás
-             * ui
-             * dal, üzleti logika a manager osztályokba
-             * bootstarp
-             * fukció bővítés
-             * keresés felhasználóra
-             * kép feltöltés
-             */
-
-            /*
-             * doksi
-             * külön userhez tartozó veiw cshtml-ből vagy controllerből
-             * mongodb tábla join szerű működés
-             * CRUD műveletek post/get/put/delete vagy elég get/post
-             * solution mappa szerkezet web->dal
-             * bootstrap
-             * validálás inkább kliens/szerver oldalon
-             * IOC db elérésre szolgáló osztályt scoped/transient?
+            /**
+             * sok adat lekérdezésnél külön lekérdezés a top10/összes -re vagy mindig az összeset és pl controllerben szűrni
+             * lekérni az összeset és utána lapozni vagy darabonként lekérni az adatbázisból
              */
 
         }

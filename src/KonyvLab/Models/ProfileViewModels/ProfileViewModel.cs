@@ -6,7 +6,7 @@ namespace KonyvLab.Models.ProfileViewModels
     public class ProfileViewModel
     {
         public IQueryable<Review> reviews { get; set; }
-        public string userName { get; set; }
+        public ApplicationUser User { get; set; }
 
     }
 }

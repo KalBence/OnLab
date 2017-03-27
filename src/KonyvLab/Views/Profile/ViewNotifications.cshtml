@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<KonyvLab.dal.Models.Notification>
+@using  KonyvLab.Controllers
 <body>
     <p>Here you can see your notifications</p>
 
     <h2>Your Notifications:</h2>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Reverse())
     {
         <table class="table" border="1" style="margin-bottom:10px" width="30%">
             <tr>
@@ -13,6 +14,10 @@
                 </td>
                 <td>
                     @item.Time
+                        @if (!item.WasRead)
+                        {
+                            <span aria-hidden="true" class="glyphicon glyphicon-exclamation-sign text-danger">new</span>
+                        }
                 </td>
             </tr>
             <tr>

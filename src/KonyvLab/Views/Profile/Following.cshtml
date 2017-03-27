@@ -1,0 +1,21 @@
+﻿@model IEnumerable<KonyvLab.dal.Models.ApplicationUser>
+
+<h2>People you follow:</h2>
+
+@foreach (var item in Model)
+{
+    <table class="table" border="1" style="margin-bottom:10px" width="30%">
+        <tr>
+            <td width="20%">
+                <a href="/Profile/Index/@item.UserName">@item.UserName</a> 
+            </td>
+            <td>
+                <a href="/Profile/Unfollow/@item.UserName" class="btn-danger btn">Unfollow</a>
+            </td>
+        </tr>
+       
+
+    </table>
+}
+
+<a href="/Profile/Index/@UserManager.GetUserName(User)">Back!</a>

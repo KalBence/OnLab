@@ -1,28 +1,59 @@
 ﻿@model KonyvLab.dal.Models.Review
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<link rel="stylesheet" href="~/lib/jquery-bar-rating/dist/themes/bootstrap-stars.css">
+<script src="~/lib/jquery-bar-rating/dist/jquery.barrating.min.js"></script>
+
 <h2>@Model.UserName's review</h2>
 <div class="col-sm-12">
     <div class="col-sm-4">
-        <img src="@Model.ImageLink" alt="Alternate Text" />
+        <img src="@Model.ImageLink" alt="Alternate Text" style="margin-bottom:20px"/>
     </div>
     <div class="col-sm-8">
         Book Title: <b>@Model.Title</b><br />
         Written by: <b>@Model.Author</b><br />
         Category: <b>@Model.Category</b><br />
+        <br />
+        This review was read <b>@Model.ViewCount</b> times <br />
     </div>
     <div class="col-sm-12">
-        <textarea rows="8" cols="100">@Model.Description</textarea>
-    </div>
-    <div class="col-sm-12">
-        <br />@Model.UserName's rating was <b>@Model.Rating</b><br />
-        Read Count: <b>@Model.ViewCount</b><br />
+        <textarea rows="8" cols="100" class="form-control" readonly>@Model.Description</textarea>
     </div>
 
-    <div class="col-sm-12">
+    <div class="col-sm-12" style="padding-top:20px">
+        <label>Rating:</label>
+        <select id="Rating" name="Rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+    </div>
+
+    <div class="col-sm-12" style="margin-bottom:20px">
         Review:
         <br />
-        <textarea readonly rows="8" cols="100">@Model.Content</textarea>
+        <textarea readonly rows="8" cols="100" class="form-control">@Model.Content</textarea>
     </div>
+
+
 </div>
-<a href="/">Home!</a>
+<a class="btn btn-default" href="/">Home!</a>
     
+<script>
+    $(document).ready(function () {
+
+        $('#Rating').barrating({
+            theme: 'bootstrap-stars'
+        });
+
+        $('#Rating').barrating('set',@Model.Rating).barrating('readonly', true);
+
+    });
+</script>
