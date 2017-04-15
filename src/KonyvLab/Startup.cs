@@ -31,19 +31,22 @@ namespace KonyvLab
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityWithMongoStoresUsingCustomTypes<ApplicationUser, IdentityRole>(Configuration.GetConnectionString("DefaultConnection"))
-            .AddDefaultTokenProviders();
+            services.AddIdentityWithMongoStoresUsingCustomTypes<ApplicationUser, IdentityRole>(Configuration.GetConnectionString("DefaultConnection"));
 
             services.Configure<IdentityOptions>(option =>
             {
+                option.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
                 option.Password.RequireNonAlphanumeric = false;
                 option.Password.RequireUppercase = false;
                 option.Password.RequireDigit = false;
                 option.Password.RequireLowercase = false;
             });
 
+            services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddTransient<ReviewManager>();
+            services.AddTransient<NotificationManager>();
+            services.AddTransient<MessageManager>();
 
             services.AddMvc();
         }

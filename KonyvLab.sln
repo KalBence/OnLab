@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B4B6A71B-057B-444E-8BDD-37B19B35A1DF}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KonyvLab", "src\KonyvLab\KonyvLab.csproj", "{229451DD-80CE-4F6F-B2E6-5F941D030239}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KonyvLab.dal", "src\KonyvLab.dal\KonyvLab.dal.csproj", "{230F0075-2621-41DB-B638-C7AB9527C488}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{385BE823-338A-4E78-9C26-5F8558FDF5B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{230F0075-2621-41DB-B638-C7AB9527C488}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{230F0075-2621-41DB-B638-C7AB9527C488}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{230F0075-2621-41DB-B638-C7AB9527C488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{385BE823-338A-4E78-9C26-5F8558FDF5B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{385BE823-338A-4E78-9C26-5F8558FDF5B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{385BE823-338A-4E78-9C26-5F8558FDF5B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{385BE823-338A-4E78-9C26-5F8558FDF5B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,8 +20,8 @@ namespace KonyvLab.Controllers
     public class ProfileController : Controller
     {
         protected ReviewManager _reviewManager;
-        protected MessageManager _messageManager = new MessageManager();
-        protected NotificationManager _notificationManager = new NotificationManager();
+        protected MessageManager _messageManager;
+        protected NotificationManager _notificationManager;
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -31,12 +31,16 @@ namespace KonyvLab.Controllers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILoggerFactory loggerFactory,
-            ReviewManager rwManager)
+            ReviewManager rwManager,
+            MessageManager messageManager,
+            NotificationManager notificationManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _reviewManager = rwManager;
+            _messageManager = messageManager;
+            _notificationManager = notificationManager;
         }
 
       //  [HttpGet("{userName}")]

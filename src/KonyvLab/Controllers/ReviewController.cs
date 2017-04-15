@@ -17,7 +17,7 @@ namespace KonyvLab.Controllers
     public class ReviewController : Controller
     {
         protected ReviewManager _reviewManager;
-        protected NotificationManager _notificationManager = new NotificationManager();
+        protected NotificationManager _notificationManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
@@ -26,12 +26,14 @@ namespace KonyvLab.Controllers
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         ILoggerFactory loggerFactory,
-        ReviewManager rwManager)
+        ReviewManager rwManager,
+        NotificationManager notificationManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = loggerFactory.CreateLogger<ReviewController>();
             _reviewManager = rwManager;
+            _notificationManager = notificationManager;
         }
 
         public IActionResult Index()
@@ -80,16 +82,14 @@ namespace KonyvLab.Controllers
         [HttpGet]
         public IActionResult Read(string Id)
         {
-            Review review = _reviewManager.FindById(Id);
             _reviewManager.IncreaseViewCount(Id);
-            return View(review);
+            return View(_reviewManager.FindById(Id));
         }
 
         [HttpGet]
         public IActionResult Update(string Id)
         {
-            Review review = _reviewManager.FindById(Id);
-            return View("Update", review);
+            return View("Update", _reviewManager.FindById(Id));
         }
 
         [HttpPost]

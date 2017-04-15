@@ -1,4 +1,5 @@
 ﻿using KonyvLab.dal.Models;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -13,12 +14,15 @@ namespace KonyvLab.dal.Managers
         protected static IMongoClient _client;
         protected static IMongoDatabase _database;
         protected IMongoCollection<Notification> _collection;
+        IConfiguration config;
 
-        public NotificationManager()
+
+        public NotificationManager(IConfiguration config)
         {
-            _client = new MongoClient("mongodb://localhost:27017");
-            _database = _client.GetDatabase("KonyvLab");
-            _collection = _database.GetCollection<Notification>("notifications");
+            this.config = config;
+            _client = new MongoClient(config["DbConnection"]);
+            _database = _client.GetDatabase(config["DbName"]);
+            _collection = _database.GetCollection<Notification>(config["NotificationTable"]);
         }
 
         public void AddNewNotification(Notification notification)
@@ -39,8 +43,8 @@ namespace KonyvLab.dal.Managers
         {
             var notifications = FindByUserId(UserId);
             foreach (var n in notifications)
-                _collection.FindOneAndUpdate(Builders<Notification>.Filter.Eq("_id", n._id), Builders<Notification>.Update
-                .Set("WasRead", true));
+                _collection.FindOneAndUpdate(Builders<Notification>.Filter.Eq(nameof(Notification._id), n._id), Builders<Notification>.Update
+                .Set(nameof(Notification.WasRead), true));
         }
 
         

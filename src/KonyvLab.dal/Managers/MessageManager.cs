@@ -1,4 +1,5 @@
 ﻿using KonyvLab.dal.Models;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,15 @@ namespace KonyvLab.dal.Managers
         protected static IMongoClient _client;
         protected static IMongoDatabase _database;
         protected IMongoCollection<Message> _collection;
+        IConfiguration config;
 
-        public MessageManager()
+
+        public MessageManager(IConfiguration config)
         {
-            _client = new MongoClient("mongodb://localhost:27017");
-            _database = _client.GetDatabase("KonyvLab");
-            _collection = _database.GetCollection<Message>("messages");
+            this.config = config;
+            _client = new MongoClient(config["DbConnection"]);
+            _database = _client.GetDatabase(config["DbName"]);
+            _collection = _database.GetCollection<Message>(config["MessageTable"]);
         }
 
         public void AddNewMessage(Message message)

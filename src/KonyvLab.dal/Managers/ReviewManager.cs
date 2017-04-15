@@ -1,4 +1,5 @@
 ﻿using KonyvLab.dal.Models;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -8,18 +9,21 @@ using System.Threading.Tasks;
 
 namespace KonyvLab.dal.Managers
 {
+
     public class ReviewManager
     {
 
         protected static IMongoClient _client;
         protected static IMongoDatabase _database;
         protected IMongoCollection<Review> _collection;
+        IConfiguration config;
 
-        public ReviewManager()
+        public ReviewManager(IConfiguration config)
         {
-            _client = new MongoClient("mongodb://localhost:27017");
-            _database = _client.GetDatabase("KonyvLab");
-            _collection = _database.GetCollection<Review>("reviews");
+            this.config =  config;
+            _client = new MongoClient(config["DbConnection"]);
+            _database = _client.GetDatabase(config["DbName"]);
+            _collection = _database.GetCollection<Review>(config["ReviewTable"]);           
         }
 
         public void AddNewReview(Review review)
@@ -31,7 +35,7 @@ namespace KonyvLab.dal.Managers
         public void IncreaseViewCount(string Id)
         {
             ObjectId oid = new ObjectId(Id);
-            _collection.FindOneAndUpdate(Builders<Review>.Filter.Eq("_id", oid), Builders<Review>.Update.Inc("ViewCount", 1));
+            _collection.FindOneAndUpdate(Builders<Review>.Filter.Eq(nameof(Review._id), oid), Builders<Review>.Update.Inc(nameof(Review.ViewCount), 1));
         }
 
         public IQueryable<Review> GetTopReviews()
@@ -44,7 +48,7 @@ namespace KonyvLab.dal.Managers
         public Review FindById(string Id)
         {
             ObjectId oid = new ObjectId(Id);
-            Review p = _collection.Find(Builders<Review>.Filter.Eq("_id", oid)).FirstOrDefault();
+            Review p = _collection.Find(Builders<Review>.Filter.Eq(nameof(Review._id), oid)).FirstOrDefault();
             return p;
         }
 
@@ -58,14 +62,14 @@ namespace KonyvLab.dal.Managers
 
         public void Update(Review r)
         {
-            _collection.FindOneAndUpdate(Builders<Review>.Filter.Eq("_id", r._id), Builders<Review>.Update
-                .Set("Title", r.Title).Set("Content", r.Content).Set("Author", r.Author).Set("Rating", r.Rating));
+            _collection.FindOneAndUpdate(Builders<Review>.Filter.Eq(nameof(Review._id), r._id), Builders<Review>.Update
+                .Set(nameof(Review.Title), r.Title).Set(nameof(Review.Content), r.Content).Set(nameof(Review.Author), r.Author).Set(nameof(Review.Rating), r.Rating));
         }
 
         public void Delete(string id)
         {
             ObjectId oid = new ObjectId(id);
-            _collection.DeleteOne(Builders<Review>.Filter.Eq("_id", oid));
+            _collection.DeleteOne(Builders<Review>.Filter.Eq(nameof(Review._id), oid));
         }
 
         public IQueryable<Review> FindByTitle(string title)
@@ -83,8 +87,6 @@ namespace KonyvLab.dal.Managers
                     select e;
             return q;
         }
-
-
 
     }
 }

@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  konyvlab:
+    image: konyvlab
+    build:
+      context: ./src/KonyvLab
+      dockerfile: Dockerfile
